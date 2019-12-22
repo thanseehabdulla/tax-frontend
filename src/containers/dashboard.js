@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Table } from "react-reusable-table";
 import dummyData from "./../configuration/static/dummydata";
+import { withRouter } from "react-router";
+
 class Dashboard extends Component {
+  logout = () => {
+    this.props.history.push("/");
+  };
   render() {
     const getHeaderCells = () => {
       return [
@@ -45,6 +50,9 @@ class Dashboard extends Component {
     };
     return (
       <div>
+        <div style={{ textAlign: "right", cursor:"pointer" }}>
+          <a onClick={this.logout}>Logout</a>
+        </div>
         <Table
           caption="Dummy Data"
           data={dummyData.dashboard.user.data}
@@ -57,4 +65,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);
