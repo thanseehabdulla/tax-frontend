@@ -1,9 +1,14 @@
-.login-page{
-    display:flex;
+.login-page {
+  .main-layout {
+    display: flex;
     justify-content: center;
-    align-items: center;
-    flex-flow: row;
-    border:1px solid gray;
-    padding:20px;
-    margin:10%;
+  }
+  .common-form {
+    margin-top: 30px;
+    text-align: center;
+    width: 70%;
+    input {
+      width: 100%;
+    }
+  }
 }
