@@ -4,6 +4,7 @@ import { Button, TextField } from "@material-ui/core";
 import * as Yup from "yup";
 import dummyData from "./../../configuration/static/dummydata";
 import { withRouter } from "react-router";
+import { FormattedMessage } from 'react-intl';
 
 const loginSchema = Yup.object().shape({
   password: Yup.string()
@@ -19,6 +20,7 @@ const CommonForm = props => {
   console.log("Prop-commonform", props);
   return (
     <div className="common-form">
+    <h1><FormattedMessage id="homepage.welcome" /></h1>
       <h1>{props.title}</h1>
       <Formik
         initialValues={{ email: "", password: "" }}
