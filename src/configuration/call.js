@@ -1,4 +1,4 @@
-const call = {
+const calls = {
   get: async (url = "") => {
     const response = await fetch(url);
     return await response.json();
@@ -16,4 +16,4 @@ const call = {
   }
 };
 
-export default call;
+export default calls;

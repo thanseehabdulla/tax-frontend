@@ -1,13 +1,14 @@
 const initialState = {
-    temp : {used:false}
-}
+  temp: { used: false }
+};
 
-
-export default function globalState(state = initialState, action) {
+function globalState(state = initialState, action) {
   switch (action.type) {
-    case 'ADD_TODO':
-      return state
+    case "ADD_TODO":
+      return state;
     default:
-      return state
+      return state;
   }
 }
+
+export default globalState;

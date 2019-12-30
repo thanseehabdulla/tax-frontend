@@ -1,65 +1,41 @@
 import React, { Component } from "react";
-import { Table } from "react-reusable-table";
-import dummyData from "./../configuration/static/dummydata";
 import { withRouter } from "react-router";
+import Topbar from "./../components/stateful/topbar";
+import { Col, Row, Container, Tab, Nav, Spinner } from "react-bootstrap";
+import ReactTable from "./../components/stateless/reacttable";
+import Userlist from "./../components/stateful/userlist";
 
 class Dashboard extends Component {
-  logout = () => {
-    this.props.history.push("/");
-  };
   render() {
-    const getHeaderCells = () => {
-      return [
-        { label: "ID", name: "id", isFilterAble: false, isSortAble: false },
-
-        {
-          label: "name",
-          name: "name",
-          isFilterAble: false,
-          isSortAble: false
-        },
-
-        {
-          label: "age",
-          name: "age",
-          isFilterAble: false,
-          isSortAble: false
-        },
-
-        {
-          label: "gender",
-          name: "gender",
-          isFilterAble: false,
-          isSortAble: false
-        },
-
-        {
-          label: "email",
-          name: "email",
-          isFilterAble: false,
-          isSortAble: false
-        },
-
-        {
-          label: "phoneNo",
-          name: "phoneNo",
-          isFilterAble: false,
-          isSortAble: false
-        }
-      ];
-    };
     return (
       <div>
-        <div style={{ textAlign: "right", cursor:"pointer" }}>
-          <a onClick={this.logout}>Logout</a>
-        </div>
-        <Table
-          caption="Dummy Data"
-          data={dummyData.dashboard.user.data}
-          footerCells={getHeaderCells()}
-          headerCells={getHeaderCells()}
-          showFooter={false}
-        />
+        <React.Fragment>
+          <Topbar />
+          <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Row>
+              <Col sm={2}>
+                <Nav variant="pills" className="flex-column">
+                  <Nav.Item>
+                    <Nav.Link eventKey="first">Tab 1</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="second">Tab 2</Nav.Link>
+                  </Nav.Item>
+                </Nav>
+              </Col>
+              <Col sm={10}>
+                <Tab.Content>
+                  <Tab.Pane eventKey="first">
+                    <Userlist />
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="second">
+                    <ReactTable />
+                  </Tab.Pane>
+                </Tab.Content>
+              </Col>
+            </Row>
+          </Tab.Container>
+        </React.Fragment>
       </div>
     );
   }

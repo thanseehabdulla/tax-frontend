@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik } from "formik";
+import { Formik, withFormik} from "formik";
 import { withRouter } from "react-router";
 import { FormattedMessage } from "react-intl";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -7,9 +7,10 @@ import validationSchema from "./yup";
 import styles from "./style";
 import Paper from "@material-ui/core/Paper";
 import Forms from "./input";
+import { connect } from "react-redux";
+import DATA_ACTIONS from "./../../redux/actions";
 
 class CommonForm extends React.Component {
-
   static defaultProps = {
     onSubmit: () => {},
     validationSchema: () => {},
@@ -31,12 +32,7 @@ class CommonForm extends React.Component {
   render() {
     console.log("Prop-commonform", this.props);
     const classes = this.props;
-    const values = {
-      username: "",
-      email: "",
-      confirmPassword: "",
-      password: ""
-    };
+
     return (
       <div className="common-form">
         <React.Fragment>
@@ -49,13 +45,9 @@ class CommonForm extends React.Component {
                 initialValues={this.props.initialValues}
                 validateOnBlur={this.props.validateOnBlur}
                 validateOnChange={this.props.validateOnChange}
-                validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting, handleReset }) => {
-                    // setSubmitting(false);
-                    console.log("val",values)
-                    setSubmitting(false);
-                    // alert("")
-                }}
+                // validationSchema={validationSchema}
+                dispatch={this.props.dispatch}
+                onSubmit = {this.props.onSubmit}
                 ref={this.props.formikRef}
                 // enableReinitialize
                 render={prop => <Forms {...this.props} {...prop} />}
@@ -68,4 +60,17 @@ class CommonForm extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles)(CommonForm));
+function mapStateToProps(state) {
+  const {} = state;
+  return {};
+}
+
+const FormikPost= withFormik({
+
+});
+
+const HOCForm = FormikPost(CommonForm);
+
+export default connect(mapStateToProps)(
+  withRouter(withStyles(styles)(HOCForm))
+);

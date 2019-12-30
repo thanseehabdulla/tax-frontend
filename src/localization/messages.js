@@ -1,8 +1,7 @@
+import en from "./en";
+import is from "./is";
+
 export default {
-  'en-GB': {
-    'login':'Login'
-  },
-  'is-IS': {
-    'login':'skrá inn'
-  }
+  "en-GB": {...en},
+  "is-IS": {...is}
 };

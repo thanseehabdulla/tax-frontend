@@ -2,6 +2,7 @@ import React from "react";
 import { Button, TextField } from "@material-ui/core";
 import { Field } from "formik";
 import FormikGetFormState from "./FormikGetFormState";
+import { FormattedMessage, injectIntl } from "react-intl";
 
 const Forms = props => {
   let defaultMetaProps = {
@@ -29,10 +30,11 @@ const Forms = props => {
     dirty,
     validateField,
     setTouched,
-    submitForm
+    submitForm,
+    showSubmitButton
   } = props;
 
-  console.log("values",values)
+  console.log("values", values);
 
   const change = (name, e) => {
     e.persist();
@@ -64,7 +66,7 @@ const Forms = props => {
               <TextField
                 type="text"
                 name={field.name}
-                label={field.name}
+                label={props.intl.formatMessage({id:field.name})}
                 // component={TextField}
                 placeholder={field.placeholder || ""}
                 value={values[field.name]}
@@ -80,7 +82,7 @@ const Forms = props => {
               <TextField
                 type="text"
                 name={field.name}
-                label={field.name}
+                label={props.intl.formatMessage({id:field.name})}
                 // component={TextField}
                 tag={Field}
                 placeholder={field.placeholder || ""}
@@ -96,7 +98,7 @@ const Forms = props => {
         );
       })}
 
-      <Button
+      {showSubmitButton && <Button
         onClick={() => submitForm()}
         fullWidth
         variant="raised"
@@ -104,11 +106,12 @@ const Forms = props => {
         // disabled={!isValid || isSubmitting}
         className="input-formik"
       >
-        Submit
-      </Button>
+        <FormattedMessage id={props.buttonTitle} />
+      </Button>}
       <FormikGetFormState handleFormState={handleFormState} />
     </form>
   );
 };
 
-export default Forms;
+export default injectIntl(Forms);
+

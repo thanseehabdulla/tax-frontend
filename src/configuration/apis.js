@@ -1,5 +1,5 @@
-let ipdev = "localhost:3000"
-let ipprod = "localhost:3000"
+let ipdev = "http://localhost:3000"
+let ipprod = "http://localhost:3000"
 let ipused = ipdev
 
 const API = {

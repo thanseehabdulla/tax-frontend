@@ -9,6 +9,9 @@ import Root from './router'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {IntlProvider, FormattedMessage} from 'react-intl';
 import messages from './localization/messages';
+import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 
 const rootElement = document.getElementById('root');
 
