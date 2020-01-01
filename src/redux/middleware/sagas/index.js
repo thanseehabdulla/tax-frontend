@@ -22,29 +22,30 @@ function* login(action) {
 function* userFetch(action) {
   const result = yield callWithAuth.get(API.user.getall);
   if (result) {
-    yield put({ type: "USER_STORE", result });
+    yield put({ type: DATA_ACTIONS.USER_STORE, result });
   } else {
     alert("error");
   }
 }
 
-function* userDetailFetch(action) {
+function* detailFetch(action) {
   const result = yield callWithAuth.get(API.user.get + "/" + action.payload);
   if (result) {
-    yield put({ type: "USER_DETAIL_STORE", result });
+    yield put({ type: DATA_ACTIONS.DETAIL_STORE, result });
+    yield put( {type: DATA_ACTIONS.UPDATE_LG ,payload:{lgEditShow: true} });
   } else {
     alert("error");
-  }
+  } 
 }
 
 function* userDelete(action) {
-  const result = yield callWithAuth.post(API.user.delete, {
+  const results = yield callWithAuth.post(API.user.delete, {
     usr_id: action.payload
   });
-  if (result) {
+  if (results) {
     const result = yield callWithAuth.get(API.user.getall);
     if (result) {
-      yield put({ type: "USER_STORE", result });
+      yield put({ type: DATA_ACTIONS.USER_STORE, result });
     } else {
       alert("error");
     }
@@ -60,7 +61,7 @@ function* userAdd(action) {
     const { msg } = results;
     const result = yield callWithAuth.get(API.user.getall);
     if (result) {
-      yield put({ type: "USER_STORE", result });
+      yield put({ type: DATA_ACTIONS.USER_STORE, result });
     } else {
       alert("error");
     }
@@ -74,7 +75,7 @@ function* userAdd(action) {
 function* mySaga() {
   yield takeEvery(DATA_ACTIONS.LOGIN_REQUEST, login);
   yield takeEvery(DATA_ACTIONS.USER_FETCH, userFetch);
-  yield takeEvery(DATA_ACTIONS.USER_DETAIL_FETCH, userDetailFetch);
+  yield takeEvery(DATA_ACTIONS.DETAIL_FETCH, detailFetch);
   yield takeEvery(DATA_ACTIONS.USER_DELETE, userDelete);
   yield takeEvery(DATA_ACTIONS.USER_ADD, userAdd);
 }

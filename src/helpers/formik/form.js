@@ -8,13 +8,11 @@ import styles from "./style";
 import Paper from "@material-ui/core/Paper";
 import Forms from "./input";
 import { connect } from "react-redux";
-import DATA_ACTIONS from "./../../redux/actions";
 
 class CommonForm extends React.Component {
   static defaultProps = {
     onSubmit: () => {},
     validationSchema: () => {},
-    initialValues: {},
     validateOnBlur: true,
     validateOnChange: false,
     fields: [],
@@ -30,7 +28,6 @@ class CommonForm extends React.Component {
   };
 
   render() {
-    console.log("Prop-commonform", this.props);
     const classes = this.props;
 
     return (
@@ -42,14 +39,15 @@ class CommonForm extends React.Component {
                 <FormattedMessage id={this.props.title} />
               </h1>}
               <Formik
-                initialValues={this.props.initialValues}
+                // initialValues={(this.props["initialValues"])}
                 validateOnBlur={this.props.validateOnBlur}
                 validateOnChange={this.props.validateOnChange}
                 // validationSchema={validationSchema}
                 dispatch={this.props.dispatch}
+                detail
                 onSubmit = {this.props.onSubmit}
                 ref={this.props.formikRef}
-                // enableReinitialize
+                enableReinitialize
                 render={prop => <Forms {...this.props} {...prop} />}
               ></Formik>
             </Paper>
@@ -61,13 +59,11 @@ class CommonForm extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {} = state;
-  return {};
+  const {detail} = state.data;
+  return {detail};
 }
 
-const FormikPost= withFormik({
-
-});
+const FormikPost= withFormik(mapStateToProps);
 
 const HOCForm = FormikPost(CommonForm);
 

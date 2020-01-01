@@ -10,9 +10,7 @@ const { userFetchActionCreator } = DATA_ACTIONS;
 
 class Dashboard extends Component {
 
-  componentWillMount(){
-  this.props.dispatch(userFetchActionCreator());
-  }
+  
 
   render() {
     return (

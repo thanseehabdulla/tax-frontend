@@ -27,7 +27,8 @@ class Login extends Component {
     const variables = {
       buttonTitle: "loginbutton",
       title: "login",
-      showTitle:true
+      showTitle:true,
+      editMode:false
     };
     return (
       <div className="login-page">
