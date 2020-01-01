@@ -16,7 +16,7 @@ class CommonForm extends React.Component {
     validationSchema: () => {},
     initialValues: {},
     validateOnBlur: true,
-    validateOnChange: true,
+    validateOnChange: false,
     fields: [],
     submitLabel: "Submit",
     submittingLabel: "Submit",
@@ -38,9 +38,9 @@ class CommonForm extends React.Component {
         <React.Fragment>
           <div className={classes.container}>
             <Paper elevation={1} className={classes.paper}>
-              <h1>
+              {this.props.showTitle && <h1>
                 <FormattedMessage id={this.props.title} />
-              </h1>
+              </h1>}
               <Formik
                 initialValues={this.props.initialValues}
                 validateOnBlur={this.props.validateOnBlur}

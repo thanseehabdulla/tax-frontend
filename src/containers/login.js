@@ -11,20 +11,23 @@ class Login extends Component {
   render() {
     const inputs = [
       {
-        type: "username",
-        name: "username",
+        type: "text",
+        name: "usr_email",
+        label: "email",
         col: 12
       },
       {
         type: "password",
-        name: "password",
+        name: "usr_password",
+        label: "password",
         col: 12
       }
     ];
 
     const variables = {
       buttonTitle: "loginbutton",
-      title: "login"
+      title: "login",
+      showTitle:true
     };
     return (
       <div className="login-page">

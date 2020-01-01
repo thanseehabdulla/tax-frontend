@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField} from "@material-ui/core";
+import { Col, Row } from "react-bootstrap";
 import { Field } from "formik";
 import FormikGetFormState from "./FormikGetFormState";
 import { FormattedMessage, injectIntl } from "react-intl";
@@ -34,13 +35,13 @@ const Forms = props => {
     showSubmitButton
   } = props;
 
-  console.log("values", values);
+  // console.log("values", values);
 
   const change = (name, e) => {
     e.persist();
-    handleChange(e);
+    // handleChange(e);
     setFieldTouched(name, true, false);
-    console.log("prope", e.target.value);
+    // console.log("prope", e.target.value);
   };
 
   const handleFormState = formState => {
@@ -51,6 +52,7 @@ const Forms = props => {
 
   return (
     <form onSubmit={handleSubmit}>
+    <Row>
       {(fields || []).map(field => {
         const gridProps = {
           ...defaultGridProps,
@@ -61,14 +63,14 @@ const Forms = props => {
           ...field.meta
         };
         return (
-          <div>
-            {field.type === "username" && (
+          <Col lg={Number(field.col)}>
+            {field.type === "text" && (
               <TextField
                 type="text"
                 name={field.name}
-                label={props.intl.formatMessage({id:field.name})}
+                label={props.intl.formatMessage({id:field.label})}
                 // component={TextField}
-                placeholder={field.placeholder || ""}
+                placeholder={props.intl.formatMessage({id:field.label})}
                 value={values[field.name]}
                 onBlur={handleBlur}
                 tag={Field}
@@ -82,10 +84,10 @@ const Forms = props => {
               <TextField
                 type="text"
                 name={field.name}
-                label={props.intl.formatMessage({id:field.name})}
+                label={props.intl.formatMessage({id:field.label})}
                 // component={TextField}
                 tag={Field}
-                placeholder={field.placeholder || ""}
+                placeholder={props.intl.formatMessage({id:field.label})}
                 value={values[field.name]}
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -94,9 +96,10 @@ const Forms = props => {
                 className="input-formik"
               />
             )}
-          </div>
+            </Col>
         );
       })}
+      </Row>
 
       {showSubmitButton && <Button
         onClick={() => submitForm()}

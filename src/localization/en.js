@@ -2,7 +2,8 @@ const en = {
     login: "Login",
     loginbutton: "Log in",
     username:"username",
-    password:"password"
+    password:"Password",
+    email:"Email"
 }
 
 export default en;

@@ -1,27 +1,46 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import DATA_ACTIONS from "./../../actions";
-import calls from './../../../configuration/call'
-import callWithAuth from './../../../configuration/callWithAuth'
-import API from './../../../configuration/apis'
-import { showLoading, hideLoading } from 'react-redux-loading-bar'
+import calls from "./../../../configuration/call";
+import callWithAuth from "./../../../configuration/callWithAuth";
+import API from "./../../../configuration/apis";
+import { showLoading, hideLoading } from "react-redux-loading-bar";
 
 function* login(action) {
-   const {username, password, history} = action.payload;
-   const result = yield(calls.post(API.auth.login,{username,password}))
-   const {msg} = result
-   if(msg === 'ok'){
-     const {token} = result
-     alert("success")
-     sessionStorage.setItem("token",token)
-     history.push("/dashboard")
-   }else{
-     alert(msg)
-   }
+  const { usr_email, usr_password, history } = action.payload;
+  const result = yield calls.post(API.auth.login, { usr_email, usr_password });
+  const { msg } = result;
+  if (msg === "ok") {
+    const { token } = result;
+    alert("success");
+    sessionStorage.setItem("token", token);
+    history.push("/dashboard");
+  } else {
+    alert(msg);
+  }
+}
 
+function* userFetch(action) {
+  const result = yield callWithAuth.get(API.user.getall);
+  if (result) {
+    yield put({ type: 'USER_STORE', result })
+  } else {
+    alert("error");
+  }
+}
+
+function* userDetailFetch(action) {
+  const result = yield callWithAuth.get(API.user.get+"/"+action.payload);
+  if (result) {
+    yield put({ type: 'USER_DETAIL_STORE', result })
+  } else {
+    alert("error");
+  }
 }
 
 function* mySaga() {
   yield takeEvery(DATA_ACTIONS.LOGIN_REQUEST, login);
+  yield takeEvery(DATA_ACTIONS.USER_FETCH, userFetch);
+  yield takeEvery(DATA_ACTIONS.USER_DETAIL_FETCH, userDetailFetch);
 }
 
 export default mySaga;

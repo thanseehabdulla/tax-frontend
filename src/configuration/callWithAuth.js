@@ -2,7 +2,7 @@ const callWithAuth = {
   get: async (url = "") => {
     const response = await fetch(url, {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("access_token")
+        Authorization: "Bearer " + sessionStorage.getItem("token")
       }
     });
     return await response.json();
@@ -12,7 +12,7 @@ const callWithAuth = {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("access_token")
+        Authorization: "Bearer " + sessionStorage.getItem("token")
       },
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
