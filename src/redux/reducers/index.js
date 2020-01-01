@@ -1,7 +1,8 @@
 const initialState = {
   temp: { used: false },
   users:[],
-  userDetail:{}
+  userDetail:{},
+  ren:false
 };
 
 function globalState(state = initialState, action) {

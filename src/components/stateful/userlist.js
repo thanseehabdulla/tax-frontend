@@ -6,7 +6,7 @@ import ToolkitProvider, {
   CSVExport
 } from "react-bootstrap-table2-toolkit";
 import { Modal, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, connect } from "react-redux";
 import DATA_ACTIONS from "./../../redux/actions";
 
 import CommonForm from "./../../helpers/formik/form";
@@ -15,17 +15,17 @@ const { ExportCSVButton } = CSVExport;
 
 const { SearchBar } = Search;
 
+
+
 function Userlist(props) {
   const [lgShow, setLgShow] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
   const [lgEditShow, setLgEditShow] = useState(false);
 
   const data = useSelector(state => state.data.users);
   const dataDetail = useSelector(state => state.data.userDetail);
-  console.log("datadetails",dataDetail)
 
   const dispatch = useDispatch();
-  const { userDetailFetchActionCreator } = DATA_ACTIONS;
+  const { userDetailFetchActionCreator, userDeleteActionCreator, userAddActionCreator } = DATA_ACTIONS;
 
   function actionFormatter(cell, row, rowIndex, formatExtraData) {
     // alert("ass")
@@ -33,14 +33,13 @@ function Userlist(props) {
       <div>
         <Button
           onClick={() => {
-            setSelectedId(row.usr_id);
             setLgEditShow(true);
             dispatch(userDetailFetchActionCreator(row.usr_id));
           }}
         >
           Edit
         </Button>
-        <Button onClick={() => setLgEditShow(true)}>DELETE</Button>
+        <Button onClick={() => dispatch(userDeleteActionCreator(row.usr_id))}>DELETE</Button>
       </div>
     );
   }
@@ -130,10 +129,12 @@ function Userlist(props) {
     }
   ];
 
+
+
   return (
     <ToolkitProvider
       keyField="id"
-      data={data.reverse()}
+      data={(data||[]).reverse()}
       columns={columns}
       search
       exportCSV
@@ -178,9 +179,10 @@ function Userlist(props) {
                 validateOnBlur={true}
                 validateOnChange={true}
                 onSubmit={(values, { setSubmitting, setFieldError }) => {
-                  this.setSubmitting = setSubmitting;
-                  this.setFieldError = setFieldError;
-                  this.props.loginRequest(values);
+                  if(lgShow){
+                  dispatch(userAddActionCreator(values));
+                  setLgShow(false);
+                  }
                 }}
                 // formikRef={el => (this.formikForm = el)}
               />
