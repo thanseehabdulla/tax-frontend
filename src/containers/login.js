@@ -49,6 +49,7 @@ class Login extends Component {
                 validateOnBlur={true}
                 validateOnChange={true}
                 onSubmit={(values, { setSubmitting, setFieldError }) => {
+                  console.log("Val",values)
                   this.setSubmitting = setSubmitting;
                   this.setFieldError = setFieldError;
                   this.props.loginRequest(values);

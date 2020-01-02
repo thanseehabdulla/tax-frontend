@@ -11,9 +11,10 @@ function* login(action) {
   const { msg } = result;
   if (msg === "ok") {
     const { token } = result;
-    alert("success");
+    // alert("success");
     sessionStorage.setItem("token", token);
-    history.push("/dashboard");
+    // history.push("/dashboard");
+    window.location = "/dashboard";
   } else {
     alert(msg);
   }
@@ -72,12 +73,31 @@ function* userAdd(action) {
   }
 }
 
+function* userEdit(action) {
+ 
+  const results = yield callWithAuth.post(API.user.update, { ...action.payload });
+  if (results.hasOwnProperty("user")) {
+    const { msg } = results;
+    const result = yield callWithAuth.get(API.user.getall);
+    if (result) {
+      yield put({ type: DATA_ACTIONS.USER_STORE, result });
+    } else {
+      alert("error");
+    }
+    alert(msg);
+  } else {
+    const { errors } = results;
+    alert(errors[0].message);
+  }
+}
+
 function* mySaga() {
   yield takeEvery(DATA_ACTIONS.LOGIN_REQUEST, login);
   yield takeEvery(DATA_ACTIONS.USER_FETCH, userFetch);
   yield takeEvery(DATA_ACTIONS.DETAIL_FETCH, detailFetch);
   yield takeEvery(DATA_ACTIONS.USER_DELETE, userDelete);
   yield takeEvery(DATA_ACTIONS.USER_ADD, userAdd);
+  yield takeEvery(DATA_ACTIONS.USER_EDIT, userEdit);
 }
 
 export default mySaga;

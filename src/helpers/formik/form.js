@@ -39,12 +39,13 @@ class CommonForm extends React.Component {
                 <FormattedMessage id={this.props.title} />
               </h1>}
               <Formik
-                // initialValues={(this.props["initialValues"])}
+                initialValues={(this.props["detail"])}
                 validateOnBlur={this.props.validateOnBlur}
                 validateOnChange={this.props.validateOnChange}
                 // validationSchema={validationSchema}
                 dispatch={this.props.dispatch}
-                detail
+                detail={this.props.detail}
+                // values={this.props.detail}
                 onSubmit = {this.props.onSubmit}
                 ref={this.props.formikRef}
                 enableReinitialize

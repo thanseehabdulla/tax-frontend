@@ -6,7 +6,11 @@ const DATA_ACTIONS = {
   DETAIL_STORE: "detail_store",
   USER_DELETE: "user_delete",
   USER_ADD:"user_add",
+  USER_EDIT:"user_edit",
   UPDATE_LG:"update_lg",
+  userEditActionCreator:payload => {
+    return { type: DATA_ACTIONS.USER_EDIT, payload };
+  },
   updateLg:payload => {
     return { type: DATA_ACTIONS.UPDATE_LG, payload };
   },

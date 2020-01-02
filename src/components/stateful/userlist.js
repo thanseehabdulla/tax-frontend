@@ -20,6 +20,7 @@ const {
   userFetchActionCreator,
   detailFetchActionCreator,
   userDeleteActionCreator,
+  userEditActionCreator,
   updateLg
 } = DATA_ACTIONS;
 
@@ -51,7 +52,7 @@ class Userlist extends React.Component {
   };
 
   addData = () => {
-    this.props.updateLg({ lgShow: true });
+    this.props.updateLg({ lgShow: true, detail:{} });
   };
 
   inputs = [
@@ -71,6 +72,53 @@ class Userlist extends React.Component {
       type: "text",
       name: "usr_api_password",
       label: "usr_api_password",
+      col: 6
+    },
+    {
+      type: "text",
+      name: "usr_ssn",
+      label: "usr_ssn",
+      col: 6
+    },
+    {
+      type: "select",
+      name: "usr_isactive",
+      label: "usr_isactive",
+      option:["Y","N"],
+      col: 6
+    },
+    {
+      type: "text",
+      name: "usr_email",
+      label: "usr_email",
+      col: 6
+    },
+    {
+      type: "select",
+      name: "usr_type",
+      label: "usr_type",
+      option:[1,2],
+      col: 6
+    },
+    {
+      type: "text",
+      name: "usr_status",
+      label: "usr_status",
+      col: 6
+    }
+  ];
+
+  inputsEdit = [
+    {
+      type: "hidden",
+      name: "usr_id",
+      label: "usr_id",
+      col: 12
+    },
+    {
+      type: "text",
+      name: "usr_name",
+      label: "username",
       col: 6
     },
     {
@@ -182,7 +230,7 @@ class Userlist extends React.Component {
               <Modal.Body>
                 <CommonForm
                   title=""
-                  fields={this.inputs}
+                  fields={lgShow?this.inputs:this.inputsEdit}
                   {...this.variables}
                   validateOnBlur={true}
                   validateOnChange={true}
@@ -191,6 +239,9 @@ class Userlist extends React.Component {
                     if (lgShow) {
                       this.props.userAddActionCreator(values);
                       this.props.updateLg({ lgShow: false });
+                    }else{
+                      this.props.userEditActionCreator(values);
+                      this.props.updateLg({ lgEditShow: false });
                     }
                   }}
                   formikRef={el => (this.formikForm = el)}
@@ -209,5 +260,6 @@ export default connect(state => state, {
   userFetchActionCreator,
   detailFetchActionCreator,
   userDeleteActionCreator,
+  userEditActionCreator,
   updateLg
 })(Userlist);

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Provider } from "react-redux";
 import Loadable from 'react-loadable';
 import Loading from './components/stateful/loader';
-
+import history from './history';
 import React from "react";
 
 const LoadableLogin = Loadable({
@@ -19,7 +19,7 @@ const LoadableDashboard = Loadable({
 
 const Root = ({ store }) => (
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route path="/login" component={LoadableLogin} />
         <Route path="/dashboard" component={LoadableDashboard} />

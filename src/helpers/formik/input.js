@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, TextField} from "@material-ui/core";
+import { Button, TextField, Select } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import { Field } from "formik";
 import FormikGetFormState from "./FormikGetFormState";
@@ -38,7 +38,7 @@ const Forms = props => {
     showSubmitButton
   } = props;
 
-  // console.log("values", detail);
+  console.log("values", values);
   let initial;
   if(!editMode)
   initial={}
@@ -72,6 +72,25 @@ const Forms = props => {
         };
         return (
           <Col lg={Number(field.col)}>
+            {field.type === "hidden" && (
+              <input
+                type="hidden"
+                name={field.name}
+                defaultValue={initial[field.name]}
+                // label={props.intl.formatMessage({id:field.label})}
+                label={field.label}
+                // component={TextField}
+                // placeholder={props.intl.formatMessage({id:field.label})}
+                value={values[field.name]}
+                onBlur={handleBlur}
+                // tag={Field}
+                onChange={handleChange}
+                error={errors[field.name]}
+                {...metaProps}
+                // style={{display:'none'}}
+                className="input-formik"
+              />
+            )}
             {field.type === "text" && (
               <TextField
                 type="text"
@@ -90,10 +109,29 @@ const Forms = props => {
                 className="input-formik"
               />
             )}
+            {field.type === "select" && (
+              <Select 
+                name={field.name}
+                displayEmpty
+                // label={props.intl.formatMessage({id:field.label})}
+                label={field.label}
+                children={field.option.map(e=><option value={Number(e)}>{e}</option>)}
+                // component={TextField}
+                // placeholder={props.intl.formatMessage({id:field.label})}
+                value={values[field.name]}
+                tag={Field}
+                onChange={handleChange}
+                error={errors[field.name]}
+                {...metaProps}
+                className="input-formik"
+                native
+              />
+            )}
             {field.type === "password" && (
               <TextField
-                type="text"
+                type="password"
                 name={field.name}
+                defaultValue=""
                 // label={props.intl.formatMessage({id:field.label})}
                 label={field.label}
                 // component={TextField}
@@ -133,5 +171,5 @@ function mapStateToProps(state) {
   return {detail:detail};
 }
 
-export default connect(state=>state)(injectIntl(Forms));
+export default injectIntl(Forms);
 
