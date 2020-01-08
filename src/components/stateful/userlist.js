@@ -98,12 +98,13 @@ class Userlist extends React.Component {
       type: "text",
       name: "usr_email",
       label: "usr_email",
-      col: 6
+      col: 12
     },
     {
-      type: "text",
+      type: "select",
       name: "usr_status",
       label: "usr_status",
+      option:['N', 'V', 'D'],
       col: 6
     }
   ];
@@ -145,13 +146,14 @@ class Userlist extends React.Component {
       type: "text",
       name: "usr_email",
       label: "usr_email",
-      col: 6
+      col: 12
     },
 
     {
-      type: "text",
+      type: "select",
       name: "usr_status",
       label: "usr_status",
+      option:['N', 'V', 'D'],
       col: 6
     }
   ];
