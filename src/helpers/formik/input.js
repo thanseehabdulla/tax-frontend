@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, TextField, Select } from "@material-ui/core";
+import { Button, TextField, Select, MenuItem, InputLabel  } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import { Field } from "formik";
 import FormikGetFormState from "./FormikGetFormState";
@@ -110,22 +110,21 @@ const Forms = props => {
               />
             )}
             {field.type === "select" && (
+              <div>
+              <InputLabel id={field.label}>{field.label}</InputLabel>
               <Select 
                 name={field.name}
-                displayEmpty
-                // label={props.intl.formatMessage({id:field.label})}
-                label={field.label}
-                children={field.option.map(e=><option value={Number(e)}>{e}</option>)}
-                // component={TextField}
-                // placeholder={props.intl.formatMessage({id:field.label})}
-                value={values[field.name]}
-                tag={Field}
+                labelId={field.label}
+                children={field.option.map(e=><MenuItem value={e}>{e}</MenuItem>)}
                 onChange={handleChange}
+                defaultValue={initial[field.name]}
+                value={values[field.name]}
                 error={errors[field.name]}
                 {...metaProps}
                 className="input-formik"
-                native
+                variant="outlined"
               />
+              </div>
             )}
             {field.type === "password" && (
               <TextField

@@ -52,7 +52,7 @@ class Userlist extends React.Component {
   };
 
   addData = () => {
-    this.props.updateLg({ lgShow: true, detail:{} });
+    this.props.updateLg({ lgShow: true, detail: {} });
   };
 
   inputs = [
@@ -84,20 +84,20 @@ class Userlist extends React.Component {
       type: "select",
       name: "usr_isactive",
       label: "usr_isactive",
-      option:["Y","N"],
-      col: 6
-    },
-    {
-      type: "text",
-      name: "usr_email",
-      label: "usr_email",
+      option: ["Y", "N"],
       col: 6
     },
     {
       type: "select",
       name: "usr_type",
       label: "usr_type",
-      option:[1,2],
+      option: [1, 2],
+      col: 6
+    },
+    {
+      type: "text",
+      name: "usr_email",
+      label: "usr_email",
       col: 6
     },
     {
@@ -128,9 +128,17 @@ class Userlist extends React.Component {
       col: 6
     },
     {
-      type: "text",
+      type: "select",
       name: "usr_isactive",
       label: "usr_isactive",
+      option: ["Y", "N"],
+      col: 6
+    },
+    {
+      type: "select",
+      name: "usr_type",
+      label: "usr_type",
+      option: [1, 2],
       col: 6
     },
     {
@@ -139,12 +147,7 @@ class Userlist extends React.Component {
       label: "usr_email",
       col: 6
     },
-    {
-      type: "text",
-      name: "usr_type",
-      label: "usr_type",
-      col: 6
-    },
+
     {
       type: "text",
       name: "usr_status",
@@ -230,7 +233,7 @@ class Userlist extends React.Component {
               <Modal.Body>
                 <CommonForm
                   title=""
-                  fields={lgShow?this.inputs:this.inputsEdit}
+                  fields={lgShow ? this.inputs : this.inputsEdit}
                   {...this.variables}
                   validateOnBlur={true}
                   validateOnChange={true}
@@ -239,7 +242,7 @@ class Userlist extends React.Component {
                     if (lgShow) {
                       this.props.userAddActionCreator(values);
                       this.props.updateLg({ lgShow: false });
-                    }else{
+                    } else {
                       this.props.userEditActionCreator(values);
                       this.props.updateLg({ lgEditShow: false });
                     }
