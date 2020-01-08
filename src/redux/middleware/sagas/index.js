@@ -10,9 +10,13 @@ function* login(action) {
   const result = yield calls.post(API.auth.login, { usr_email, usr_password });
   const { msg } = result;
   if (msg === "ok") {
-    const { token } = result;
+    const { token , user } = result;
     // alert("success");
     sessionStorage.setItem("token", token);
+    sessionStorage.setItem("usr_id", user.usr_id);
+    sessionStorage.setItem("usr_api_password", user.usr_api_password);
+    sessionStorage.setItem("usr_isactive", user.usr_isactive);
+    sessionStorage.setItem("usr_status", user.usr_status);
     // history.push("/dashboard");
     window.location = "/dashboard";
   } else {
@@ -346,7 +350,7 @@ function* trxDelete(action) {
 
 function* trxAdd(action) {
  
-  const results = yield callWithAuth.post(API.trx.create, { ...action.payload });
+  const results = yield callWithAuth.post(API.trx.create, { ...action.payload, trx_usr_id:sessionStorage.getItem("usr_id") });
   if (results) {
     const { msg } = results;
     const result = yield callWithAuth.get(API.trx.getall);
@@ -364,7 +368,7 @@ function* trxAdd(action) {
 
 function* trxEdit(action) {
  
-  const results = yield callWithAuth.post(API.trx.update, { ...action.payload });
+  const results = yield callWithAuth.post(API.trx.update, { ...action.payload, trx_usr_id:sessionStorage.getItem("usr_id") });
   if (results) {
     const { msg } = results;
     const result = yield callWithAuth.get(API.trx.getall);
