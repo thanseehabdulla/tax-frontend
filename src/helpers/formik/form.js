@@ -34,7 +34,6 @@ class CommonForm extends React.Component {
       <div className="common-form">
         <React.Fragment>
           <div className={classes.container}>
-            <Paper elevation={1} className={classes.paper}>
               {this.props.showTitle && <h1>
                 <FormattedMessage id={this.props.title} />
               </h1>}
@@ -51,7 +50,6 @@ class CommonForm extends React.Component {
                 enableReinitialize
                 render={prop => <Forms {...this.props} {...prop} />}
               ></Formik>
-            </Paper>
           </div>
         </React.Fragment>
       </div>

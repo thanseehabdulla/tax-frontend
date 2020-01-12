@@ -27,14 +27,14 @@ function Topbar(props) {
             </Navbar.Brand>
             <div className="topbar-right">
              <Nav className="justify-content-end" activeKey="/home">
-            <Nav.Item>
+            {/* <Nav.Item>
               <Nav.Link>English</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link>íslensku</Nav.Link>
-            </Nav.Item>
+            </Nav.Item> */}
             {sessionStorage.getItem("token") !== null && sessionStorage.getItem("token") !== "" && <Nav.Item>
-              <Nav.Link onClick={logout}>Logout</Nav.Link>
+              <Nav.Link className="logout" onClick={logout}>Logout</Nav.Link>
             </Nav.Item>}
           </Nav>
           </div>

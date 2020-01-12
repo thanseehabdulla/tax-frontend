@@ -5,7 +5,7 @@ import ToolkitProvider, {
   Search,
   CSVExport
 } from "react-bootstrap-table2-toolkit";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, ButtonGroup } from "react-bootstrap";
 import { connect } from "react-redux";
 import DATA_ACTIONS from "./../../redux/actions";
 
@@ -45,8 +45,22 @@ class Userlist extends React.Component {
     // alert("ass")
     return (
       <div>
-        <Button onClick={this.editBut.bind(this, row.usr_id)}>Edit</Button>
-        <Button onClick={this.deleteData.bind(this, row.usr_id)}>DELETE</Button>
+        <ButtonGroup>
+          <Button
+            // variant="outlined"
+            color="primary"
+            onClick={this.editBut.bind(this, row.usr_id)}
+          >
+            Edit
+          </Button>
+          <Button
+            // variant="outlined"
+            color="secondary"
+            onClick={this.deleteData.bind(this, row.usr_id)}
+          >
+            DELETE
+          </Button>
+        </ButtonGroup>
       </div>
     );
   };
@@ -104,7 +118,7 @@ class Userlist extends React.Component {
       type: "select",
       name: "usr_status",
       label: "usr_status",
-      option:['N', 'V', 'D'],
+      option: ["N", "V", "D"],
       col: 6
     }
   ];
@@ -153,7 +167,7 @@ class Userlist extends React.Component {
       type: "select",
       name: "usr_status",
       label: "usr_status",
-      option:['N', 'V', 'D'],
+      option: ["N", "V", "D"],
       col: 6
     }
   ];

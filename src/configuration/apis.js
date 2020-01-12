@@ -1,6 +1,6 @@
 let ipdev = "http://localhost:3000"
-let ipprod = "http://localhost:3000"
-let ipused = ipdev
+let ipprod = "http://54.173.7.226:3000"
+let ipused = ipprod
 
 const API = {
     'auth':{

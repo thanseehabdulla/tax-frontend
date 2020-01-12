@@ -2,15 +2,26 @@
     margin:10px 0 !important;
 }
 
-button{
-    background:$buttonColor;
-    color:$white;
+.btn-primary, .btn-default, .page-item.active .page-link{
+    border-color:#333 !important;
+    background: transparent !important;
+    color:black !important;
 }
 
+.btn-primary:focus {
+    box-shadow: unset !important;
+}
+
+
+
+.nav-item > a{
+    color: black !important;
+}
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     margin:5px 0;
     color: #fff;
-    background-color: $buttonColor;
+    background-color: transparent !important;
+    border:1px solid #333;
 }
 
 .loader{
@@ -24,4 +35,16 @@ button{
 .table-header{
     display:flex;
     justify-content: space-between;
+}
+
+*{
+    text-transform: capitalize !important;
+}
+
+.tab-content{
+    margin:45px !important;
+}
+
+.nav-pills{
+    margin: 15px 10px !important;
 }

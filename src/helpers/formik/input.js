@@ -153,7 +153,7 @@ const Forms = props => {
         onClick={() => submitForm()}
         fullWidth
         variant="outlined"
-        color="primary"
+        color="default"
         // disabled={!isValid || isSubmitting}
         className="input-formik"
       >
