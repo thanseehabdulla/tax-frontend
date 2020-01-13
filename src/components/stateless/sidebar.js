@@ -21,8 +21,10 @@ function Sidebar(props) {
     TrxLog
   };
   return (
+    <div>
     <Tab.Container id="left-tabs-example" defaultActiveKey="user">
-      <Row>
+    <div>
+      <Row style={{margin:0}}>
         <Col sm={2}>
           <Nav variant="pills" className="flex-column">
             {(AdminConfig.sidebar || []).map(e => (
@@ -45,7 +47,9 @@ function Sidebar(props) {
           </Tab.Content>
         </Col>
       </Row>
+      </div>
     </Tab.Container>
+    </div>
   );
 }
 

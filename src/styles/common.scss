@@ -6,6 +6,7 @@
     border-color:#333 !important;
     background: transparent !important;
     color:black !important;
+    margin-right: 5px;
 }
 
 .btn-primary:focus {
@@ -22,6 +23,10 @@
     color: #fff;
     background-color: transparent !important;
     border:1px solid #333;
+}
+.nav-pills .nav-link:hover, .btn-primary:hover, .btn-default:hover, thead{
+    background: #333 !important;
+    color: #fff !important;
 }
 
 .loader{

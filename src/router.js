@@ -17,12 +17,18 @@ const LoadableDashboard = Loadable({
   loading: Loading,
 });
 
+const LoadableUserDashboard = Loadable({
+  loader: () => import('./containers/userDashboard'),
+  loading: Loading,
+});
+
 const Root = ({ store }) => (
   <Provider store={store}>
     <Router history={history}>
       <Switch>
         <Route path="/login" component={LoadableLogin} />
         <Route path="/dashboard" component={LoadableDashboard} />
+        <Route path="/userdashboard" component={LoadableUserDashboard} />
         <Route path="/" component={LoadableLogin} />
       </Switch>
     </Router>
