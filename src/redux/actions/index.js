@@ -45,6 +45,15 @@ const DATA_ACTIONS = {
   TRX_ADD:"trx_add",
   TRX_EDIT:"trx_edit",
   UPDATE_TRXLG:"update_trxlg",
+  // invoice
+  INVOICE_STORE: "invoice_store",
+  INVOICE_DETAIL_STORE: "invoice_detail_store",
+  INVOICE_FETCH: "invoice_fetch",
+  INVOICE_DETAIL_FETCH: "invoice_detail_fetch",
+  INVOICE_DELETE: "invoice_delete",
+  INVOICE_ADD:"invoice_add",
+  INVOICE_EDIT:"invoice_edit",
+  UPDATE_INVOICELG:"update_invoicelg",
   // user
    updateLg:payload => {
     return { type: DATA_ACTIONS.UPDATE_LG, payload };
@@ -142,6 +151,25 @@ const DATA_ACTIONS = {
   },
   updatetrxLg:payload => {
     return { type: DATA_ACTIONS.UPDATE_TRXLG, payload };
+  },
+  // invoice
+  invoiceEditActionCreator:payload => {
+    return { type: DATA_ACTIONS.INVOICE_EDIT, payload };
+  },
+  invoiceFetchActionCreator: () => {
+    return { type: DATA_ACTIONS.INVOICE_FETCH };
+  },
+  invoiceDetailFetchActionCreator: payload => {
+    return { type: DATA_ACTIONS.INVOICE_DETAIL_FETCH, payload };
+  },
+  invoiceDeleteActionCreator: payload => {
+    return { type: DATA_ACTIONS.INVOICE_DELETE, payload };
+  },
+  invoiceAddActionCreator:payload => {
+    return { type: DATA_ACTIONS.INVOICE_ADD, payload };
+  },
+  updateinvoiceLg:payload => {
+    return { type: DATA_ACTIONS.UPDATE_INVOICELG, payload };
   },
 };
 

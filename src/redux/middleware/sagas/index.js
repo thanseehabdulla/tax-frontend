@@ -384,6 +384,78 @@ function* trxEdit(action) {
   }
 }
 
+//invoice
+function* invoiceFetch(action) {
+  const result = yield callWithAuth.get(API.invoice.getall);
+  if (result) {
+    yield put({ type: DATA_ACTIONS.TRX_STORE, result });
+  } else {
+    alert("error");
+  }
+}
+
+function* invoiceDetailFetch(action) {
+  const result = yield callWithAuth.get(API.invoice.get + "/" + action.payload);
+  if (result) {
+    yield put({ type: DATA_ACTIONS.TRX_DETAIL_STORE, result });
+    yield put( {type: DATA_ACTIONS.UPDATE_TRXLG ,payload:{invoicelgEditShow: true} });
+  } else {
+    alert("error");
+  } 
+}
+
+function* invoiceDelete(action) {
+  const results = yield callWithAuth.post(API.invoice.delete, {
+    trx_id: action.payload
+  });
+  if (results) {
+    const result = yield callWithAuth.get(API.invoice.getall);
+    if (result) {
+      yield put({ type: DATA_ACTIONS.TRX_STORE, result });
+    } else {
+      alert("error");
+    }
+  } else {
+    alert("error");
+  }
+}
+
+function* invoiceAdd(action) {
+ 
+  const results = yield callWithAuth.post(API.invoice.create, { ...action.payload, invoice_usr_id:sessionStorage.getItem("usr_id") });
+  if (results) {
+    const { msg } = results;
+    const result = yield callWithAuth.get(API.invoice.getall);
+    if (result) {
+      yield put({ type: DATA_ACTIONS.TRX_STORE, result });
+    } else {
+      alert("error");
+    }
+    alert(msg);
+  } else {
+    const { errors } = results;
+    alert(errors[0].message);
+  }
+}
+
+function* invoiceEdit(action) {
+ 
+  const results = yield callWithAuth.post(API.invoice.update, { ...action.payload, invoice_usr_id:sessionStorage.getItem("usr_id") });
+  if (results) {
+    const { msg } = results;
+    const result = yield callWithAuth.get(API.invoice.getall);
+    if (result) {
+      yield put({ type: DATA_ACTIONS.TRX_STORE, result });
+    } else {
+      alert("error");
+    }
+    alert(msg);
+  } else {
+    const { errors } = results;
+    alert(errors[0].message);
+  }
+}
+
 function* mySaga() {
   yield takeEvery(DATA_ACTIONS.LOGIN_REQUEST, login);
   yield takeEvery(DATA_ACTIONS.USER_FETCH, userFetch);
@@ -415,6 +487,12 @@ function* mySaga() {
   yield takeEvery(DATA_ACTIONS.TRX_DELETE, trxDelete);
   yield takeEvery(DATA_ACTIONS.TRX_ADD, trxAdd);
   yield takeEvery(DATA_ACTIONS.TRX_EDIT, trxEdit);
+  // invoice
+  yield takeEvery(DATA_ACTIONS.INVOICE_FETCH, invoiceFetch);
+  yield takeEvery(DATA_ACTIONS.INVOICE_DETAIL_FETCH, invoiceDetailFetch);
+  yield takeEvery(DATA_ACTIONS.INVOICE_DELETE, invoiceDelete);
+  yield takeEvery(DATA_ACTIONS.INVOICE_ADD, invoiceAdd);
+  yield takeEvery(DATA_ACTIONS.INVOICE_EDIT, invoiceEdit);
 }
 
 export default mySaga;
