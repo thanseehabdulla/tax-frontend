@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import DATA_ACTIONS from "./../../redux/actions";
 
 import CommonForm from "./../../helpers/formik/form";
-import countryList from "./helper/countrylist"
+import countryList from "./helper/countrylist";
 
 const { ExportCSVButton } = CSVExport;
 
@@ -31,74 +31,35 @@ class Invoice extends React.Component {
   }
 
   hide = () => {
-    this.props.updateinvoiceLg({ ilgShow: false, ilgEditShow: false });
+    this.props.updateinvoiceLg({
+      invoicelgShow: false,
+      invoicelgEditShow: false
+    });
   };
 
-  editBut = invoice_id => {
-    this.props.invoiceDetailFetchActionCreator(invoice_id);
+  editBut = inv_id => {
+    this.props.invoiceDetailFetchActionCreator(inv_id);
   };
 
-  deleteData = invoice_id => {
-    this.props.invoiceDeleteActionCreator(invoice_id);
+  deleteData = inv_id => {
+    this.props.invoiceDeleteActionCreator(inv_id);
   };
 
   actionFormatter = (cell, row, rowIndex, formatExtraData) => {
     // alert("ass")
     return (
       <div>
-        <Button onClick={this.editBut.bind(this, row.invoice_id)}>Edit</Button>
-        <Button onClick={this.deleteData.bind(this, row.invoice_id)}>DELETE</Button>
+        <Button onClick={this.editBut.bind(this, row.inv_id)}>Edit</Button>
+        <Button onClick={this.deleteData.bind(this, row.inv_id)}>
+          DELETE
+        </Button>
       </div>
     );
   };
 
   addData = () => {
-    this.props.updateinvoiceLg({ ilgShow: true, detail: {} });
+    this.props.updateinvoiceLg({ invoicelgShow: true, detail: {} });
   };
-
-  inputs = [
-    {
-      type: "text",
-      name: "invoice_name",
-      label: "invoice_name",
-      col: 6
-    },
-    {
-      type: "text",
-      name: "invoice_perc",
-      label: "invoice_perc",
-      col: 6
-    },
-    {
-      type: "select",
-      name: "invoice_isactive",
-      label: "invoice_isactive",
-      option:["Y","N"],
-      col: 6
-    },
-  ];
-
-  inputsEdit = [
-    {
-      type: "text",
-      name: "invoice_name",
-      label: "invoice_name",
-      col: 6
-    },
-    {
-      type: "text",
-      name: "invoice_perc",
-      label: "invoice_perc",
-      col: 6
-    },
-    {
-      type: "select",
-      name: "invoice_isactive",
-      label: "invoice_isactive",
-      option:["Y","N"],
-      col: 6
-    },
-  ];
 
   variables = {
     buttonTitle: "save",
@@ -108,16 +69,24 @@ class Invoice extends React.Component {
 
   columns = [
     {
-      dataField: "invoice_name",
-      text: "invoice_name"
+      dataField: "inv_customer_name",
+      text: "inv_customer_name"
     },
     {
-      dataField: "invoice_perc",
-      text: "invoice_perc"
+      dataField: "inv_customer_ssn",
+      text: "inv_customer_ssn"
     },
     {
-      dataField: "invoice_isactive",
-      text: "invoice_isactive"
+      dataField: "inv_total",
+      text: "inv_total"
+    },
+    {
+      dataField: "inv_invoice_date",
+      text: "inv_invoice_date"
+    },
+    {
+      dataField: "inv_due_date",
+      text: "inv_due_date"
     },
     {
       dataField: "",
@@ -128,8 +97,135 @@ class Invoice extends React.Component {
 
   render() {
     const data = this.props.data.invoices;
-    const { ilgShow, ilgEditShow } = this.props.data;
+    const { invoicelgShow, invoicelgEditShow } = this.props.data;
+    const inputs = [
+      {
+        type: "select-ssn",
+        name: "inv_customer_ssn",
+        label: "inv_customer_ssn",
+        option: this.props.data.customers,
+        col: 12
+      },
+      {
+        type: "date",
+        name: "inv_due_date",
+        label: "inv_due_date",
+        col: 6
+      },
+      {
+        type: "date",
+        name: "inv_deadline_date",
+        label: "inv_deadline_date",
+        col: 6
+      },
+      {
+        type: "text",
+        name: "inv_total",
+        label: "inv_total",
+        col: 6
+      },
+      {
+        type: "select",
+        name: "inv_type",
+        label: "inv_type",
+        option: ["D", "C"],
+        col: 6
+      },
+      {
+        type: "text",
+        name: "inv_note",
+        label: "inv_note",
+        col: 6
+      },
+      {
+        type: "text",
+        name: "inv_desc",
+        label: "inv_desc",
+        col: 6
+      },
+      {
+        type: "select",
+        name: "inv_status",
+        label: "inv_status",
+        option: ["N", "S", "P", "C"],
+        col: 6
+      },
+      {
+        type: "select",
+        name: "inv_isdelete",
+        label: "inv_isdelete",
+        option: ["Y", "N"],
+        col: 6
+      }
+    ];
 
+    const inputsEdit = [
+      {
+        type: "disabled",
+        name: "inv_customer_ssn",
+        label: "inv_customer_ssn",
+        option: this.props.data.customers,
+        col: 6
+      },
+      {
+        type: "disabled",
+        name: "inv_customer_name",
+        label: "inv_customer_name",
+        option: this.props.data.customers,
+        col: 6
+      },
+      {
+        type: "date",
+        name: "inv_due_date",
+        label: "inv_due_date",
+        col: 6
+      },
+      {
+        type: "date",
+        name: "inv_deadline_date",
+        label: "inv_deadline_date",
+        col: 6
+      },
+      {
+        type: "text",
+        name: "inv_total",
+        label: "inv_total",
+        col: 6
+      },
+      {
+        type: "select",
+        name: "inv_type",
+        label: "inv_type",
+        option: ["D", "C"],
+        col: 6
+      },
+      {
+        type: "text",
+        name: "inv_note",
+        label: "inv_note",
+        col: 6
+      },
+      {
+        type: "text",
+        name: "inv_desc",
+        label: "inv_desc",
+        col: 6
+      },
+      {
+        type: "select",
+        name: "inv_status",
+        label: "inv_status",
+        option: ["N", "S", "P", "C"],
+        col: 6
+      },
+      {
+        type: "select",
+        name: "inv_isdelete",
+        label: "inv_isdelete",
+        option: ["Y", "N"],
+        col: 6
+      }
+    ];
     return (
       <ToolkitProvider
         keyField="id"
@@ -156,31 +252,31 @@ class Invoice extends React.Component {
 
             <Modal
               size="xl"
-              show={ilgShow || ilgEditShow}
+              show={invoicelgShow || invoicelgEditShow}
               onHide={this.hide}
               aria-labelledby="example-modal-sizes-title-lg"
             >
               <Modal.Header closeButton>
                 <Modal.Title id="example-modal-sizes-title-lg">
-                  {ilgShow && "Add User"}
-                  {ilgEditShow && "Update User"}
+                  {invoicelgShow && "Add User"}
+                  {invoicelgEditShow && "Update User"}
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <CommonForm
                   title=""
-                  fields={ilgShow ? this.inputs : this.inputsEdit}
+                  fields={invoicelgShow ? inputs : inputsEdit}
                   {...this.variables}
                   validateOnBlur={true}
                   validateOnChange={true}
-                  editMode={ilgShow ? false : true}
+                  editMode={invoicelgShow ? false : true}
                   onSubmit={(values, { setSubmitting, setFieldError }) => {
-                    if (ilgShow) {
+                    if (invoicelgShow) {
                       this.props.invoiceAddActionCreator(values);
-                      this.props.updateinvoiceLg({ ilgShow: false });
+                      this.props.updateinvoiceLg({ invoicelgShow: false });
                     } else {
                       this.props.invoiceEditActionCreator(values);
-                      this.props.updateinvoiceLg({ ilgEditShow: false });
+                      this.props.updateinvoiceLg({ invoicelgEditShow: false });
                     }
                   }}
                   formikRef={el => (this.formikForm = el)}

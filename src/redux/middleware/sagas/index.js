@@ -10,15 +10,19 @@ function* login(action) {
   const result = yield calls.post(API.auth.login, { usr_email, usr_password });
   const { msg } = result;
   if (msg === "ok") {
-    const { token , user } = result;
-    // alert("success");
-    sessionStorage.setItem("token", token);
-    sessionStorage.setItem("usr_id", user.usr_id);
-    sessionStorage.setItem("usr_api_password", user.usr_api_password);
-    sessionStorage.setItem("usr_isactive", user.usr_isactive);
-    sessionStorage.setItem("usr_status", user.usr_status);
-    // history.push("/dashboard");
-    window.location = "/dashboard";
+    const { token, user } = result;
+    if (user.usr_isactive) {
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("usr_id", user.usr_id);
+      sessionStorage.setItem("usr_api_password", user.usr_api_password);
+      sessionStorage.setItem("usr_isactive", user.usr_isactive);
+      sessionStorage.setItem("usr_status", user.usr_status);
+      sessionStorage.setItem("usr_type", user.usr_type);
+      if (user.usr_type === 1) window.location = "/dashboard";
+      else window.location = "/userdashboard";
+    } else {
+      alert("user is not activated");
+    }
   } else {
     alert(msg);
   }
@@ -37,10 +41,10 @@ function* detailFetch(action) {
   const result = yield callWithAuth.get(API.user.get + "/" + action.payload);
   if (result) {
     yield put({ type: DATA_ACTIONS.DETAIL_STORE, result });
-    yield put( {type: DATA_ACTIONS.UPDATE_LG ,payload:{lgEditShow: true} });
+    yield put({ type: DATA_ACTIONS.UPDATE_LG, payload: { lgEditShow: true } });
   } else {
     alert("error");
-  } 
+  }
 }
 
 function* userDelete(action) {
@@ -60,7 +64,6 @@ function* userDelete(action) {
 }
 
 function* userAdd(action) {
- 
   const results = yield calls.post(API.auth.register, { ...action.payload });
   if (results.hasOwnProperty("user")) {
     const { msg } = results;
@@ -78,8 +81,9 @@ function* userAdd(action) {
 }
 
 function* userEdit(action) {
- 
-  const results = yield callWithAuth.post(API.user.update, { ...action.payload });
+  const results = yield callWithAuth.post(API.user.update, {
+    ...action.payload
+  });
   if (results.hasOwnProperty("user")) {
     const { msg } = results;
     const result = yield callWithAuth.get(API.user.getall);
@@ -95,10 +99,11 @@ function* userEdit(action) {
   }
 }
 
-
 //customer
 function* customerFetch(action) {
-  const result = yield callWithAuth.get(API.customer.getall);
+  const result = yield callWithAuth.get(
+    API.customer.getall + "/" + sessionStorage.getItem("usr_id")
+  );
   if (result) {
     yield put({ type: DATA_ACTIONS.CUSTOMER_STORE, result });
   } else {
@@ -107,13 +112,18 @@ function* customerFetch(action) {
 }
 
 function* customerDetailFetch(action) {
-  const result = yield callWithAuth.get(API.customer.get + "/" + action.payload);
+  const result = yield callWithAuth.get(
+    API.customer.get + "/" + action.payload
+  );
   if (result) {
     yield put({ type: DATA_ACTIONS.CUSTOMER_DETAIL_STORE, result });
-    yield put( {type: DATA_ACTIONS.UPDATE_CLG ,payload:{clgEditShow: true} });
+    yield put({
+      type: DATA_ACTIONS.UPDATE_CLG,
+      payload: { clgEditShow: true }
+    });
   } else {
     alert("error");
-  } 
+  }
 }
 
 function* customerDelete(action) {
@@ -121,7 +131,7 @@ function* customerDelete(action) {
     cus_id: action.payload
   });
   if (results) {
-    const result = yield callWithAuth.get(API.customer.getall);
+    const result = yield callWithAuth.get(API.customer.getall + "/" + sessionStorage.getItem("usr_id"));
     if (result) {
       yield put({ type: DATA_ACTIONS.CUSTOMER_STORE, result });
     } else {
@@ -133,11 +143,15 @@ function* customerDelete(action) {
 }
 
 function* customerAdd(action) {
- 
-  const results = yield callWithAuth.post(API.customer.create, { ...action.payload });
+  const results = yield callWithAuth.post(API.customer.create, {
+    ...action.payload,
+    cus_usr_id: sessionStorage.getItem("usr_id")
+  });
   if (results.hasOwnProperty("user")) {
     const { msg } = results;
-    const result = yield callWithAuth.get(API.customer.getall);
+    const result = yield callWithAuth.get(
+      API.customer.getall + "/" + sessionStorage.getItem("usr_id")
+    );
     if (result) {
       yield put({ type: DATA_ACTIONS.CUSTOMER_STORE, result });
     } else {
@@ -151,11 +165,12 @@ function* customerAdd(action) {
 }
 
 function* customerEdit(action) {
- 
-  const results = yield callWithAuth.post(API.customer.update, { ...action.payload });
+  const results = yield callWithAuth.post(API.customer.update, {
+    ...action.payload
+  });
   if (results.hasOwnProperty("user")) {
     const { msg } = results;
-    const result = yield callWithAuth.get(API.customer.getall);
+    const result = yield callWithAuth.get(API.customer.getall + "/" + sessionStorage.getItem("usr_id"));
     if (result) {
       yield put({ type: DATA_ACTIONS.CUSTOMER_STORE, result });
     } else {
@@ -182,10 +197,13 @@ function* taxDetailFetch(action) {
   const result = yield callWithAuth.get(API.tax.get + "/" + action.payload);
   if (result) {
     yield put({ type: DATA_ACTIONS.TAX_DETAIL_STORE, result });
-    yield put( {type: DATA_ACTIONS.UPDATE_TLG ,payload:{tlgEditShow: true} });
+    yield put({
+      type: DATA_ACTIONS.UPDATE_TLG,
+      payload: { tlgEditShow: true }
+    });
   } else {
     alert("error");
-  } 
+  }
 }
 
 function* taxDelete(action) {
@@ -193,7 +211,7 @@ function* taxDelete(action) {
     tax_id: action.payload
   });
   if (results) {
-    const result = yield callWithAuth.get(API.tax.getall);
+    const result = yield callWithAuth.get(API.tax.getall + "/" + sessionStorage.getItem("usr_id"));
     if (result) {
       yield put({ type: DATA_ACTIONS.TAX_STORE, result });
     } else {
@@ -205,8 +223,9 @@ function* taxDelete(action) {
 }
 
 function* taxAdd(action) {
- 
-  const results = yield callWithAuth.post(API.tax.create, { ...action.payload });
+  const results = yield callWithAuth.post(API.tax.create, {
+    ...action.payload
+  });
   if (results) {
     const { msg } = results;
     const result = yield callWithAuth.get(API.tax.getall);
@@ -223,8 +242,9 @@ function* taxAdd(action) {
 }
 
 function* taxEdit(action) {
- 
-  const results = yield callWithAuth.post(API.tax.update, { ...action.payload });
+  const results = yield callWithAuth.post(API.tax.update, {
+    ...action.payload
+  });
   if (results) {
     const { msg } = results;
     const result = yield callWithAuth.get(API.tax.getall);
@@ -251,13 +271,18 @@ function* currencyFetch(action) {
 }
 
 function* currencyDetailFetch(action) {
-  const result = yield callWithAuth.get(API.currency.get + "/" + action.payload);
+  const result = yield callWithAuth.get(
+    API.currency.get + "/" + action.payload
+  );
   if (result) {
     yield put({ type: DATA_ACTIONS.CURRENCY_DETAIL_STORE, result });
-    yield put( {type: DATA_ACTIONS.UPDATE_CRLG ,payload:{crlgEditShow: true} });
+    yield put({
+      type: DATA_ACTIONS.UPDATE_CRLG,
+      payload: { crlgEditShow: true }
+    });
   } else {
     alert("error");
-  } 
+  }
 }
 
 function* currencyDelete(action) {
@@ -277,8 +302,9 @@ function* currencyDelete(action) {
 }
 
 function* currencyAdd(action) {
- 
-  const results = yield callWithAuth.post(API.currency.create, { ...action.payload });
+  const results = yield callWithAuth.post(API.currency.create, {
+    ...action.payload
+  });
   if (results) {
     const { msg } = results;
     const result = yield callWithAuth.get(API.currency.getall);
@@ -295,8 +321,9 @@ function* currencyAdd(action) {
 }
 
 function* currencyEdit(action) {
- 
-  const results = yield callWithAuth.post(API.currency.update, { ...action.payload });
+  const results = yield callWithAuth.post(API.currency.update, {
+    ...action.payload
+  });
   if (results) {
     const { msg } = results;
     const result = yield callWithAuth.get(API.currency.getall);
@@ -314,7 +341,9 @@ function* currencyEdit(action) {
 
 //trx
 function* trxFetch(action) {
-  const result = yield callWithAuth.get(API.trx.getall);
+  const result = yield callWithAuth.get(
+    API.trx.getall + "/" + sessionStorage.getItem("usr_id")
+  );
   if (result) {
     yield put({ type: DATA_ACTIONS.TRX_STORE, result });
   } else {
@@ -326,10 +355,13 @@ function* trxDetailFetch(action) {
   const result = yield callWithAuth.get(API.trx.get + "/" + action.payload);
   if (result) {
     yield put({ type: DATA_ACTIONS.TRX_DETAIL_STORE, result });
-    yield put( {type: DATA_ACTIONS.UPDATE_TRXLG ,payload:{trxlgEditShow: true} });
+    yield put({
+      type: DATA_ACTIONS.UPDATE_TRXLG,
+      payload: { trxlgEditShow: true }
+    });
   } else {
     alert("error");
-  } 
+  }
 }
 
 function* trxDelete(action) {
@@ -349,11 +381,16 @@ function* trxDelete(action) {
 }
 
 function* trxAdd(action) {
- 
-  const results = yield callWithAuth.post(API.trx.create, { ...action.payload, trx_usr_id:sessionStorage.getItem("usr_id") });
+  const results = yield callWithAuth.post(API.trx.create, {
+    ...action.payload,
+    trx_usr_id: sessionStorage.getItem("usr_id")
+  });
+  console.log("Results", results);
   if (results) {
     const { msg } = results;
-    const result = yield callWithAuth.get(API.trx.getall);
+    const result = yield callWithAuth.get(
+      API.trx.getall + "/" + sessionStorage.getItem("usr_id")
+    );
     if (result) {
       yield put({ type: DATA_ACTIONS.TRX_STORE, result });
     } else {
@@ -367,11 +404,13 @@ function* trxAdd(action) {
 }
 
 function* trxEdit(action) {
- 
-  const results = yield callWithAuth.post(API.trx.update, { ...action.payload, trx_usr_id:sessionStorage.getItem("usr_id") });
+  const results = yield callWithAuth.post(API.trx.update, {
+    ...action.payload,
+    trx_usr_id: sessionStorage.getItem("usr_id")
+  });
   if (results) {
     const { msg } = results;
-    const result = yield callWithAuth.get(API.trx.getall);
+    const result = yield callWithAuth.get(API.trx.getall + "/" + sessionStorage.getItem("usr_id"));
     if (result) {
       yield put({ type: DATA_ACTIONS.TRX_STORE, result });
     } else {
@@ -386,9 +425,11 @@ function* trxEdit(action) {
 
 //invoice
 function* invoiceFetch(action) {
-  const result = yield callWithAuth.get(API.invoice.getall);
+  const result = yield callWithAuth.get(
+    API.invoice.getall + "/" + sessionStorage.getItem("usr_id")
+  );
   if (result) {
-    yield put({ type: DATA_ACTIONS.TRX_STORE, result });
+    yield put({ type: DATA_ACTIONS.INVOICE_STORE, result });
   } else {
     alert("error");
   }
@@ -397,21 +438,24 @@ function* invoiceFetch(action) {
 function* invoiceDetailFetch(action) {
   const result = yield callWithAuth.get(API.invoice.get + "/" + action.payload);
   if (result) {
-    yield put({ type: DATA_ACTIONS.TRX_DETAIL_STORE, result });
-    yield put( {type: DATA_ACTIONS.UPDATE_TRXLG ,payload:{invoicelgEditShow: true} });
+    yield put({ type: DATA_ACTIONS.INVOICE_DETAIL_STORE, result });
+    yield put({
+      type: DATA_ACTIONS.UPDATE_INVOICELG,
+      payload: { invoicelgEditShow: true }
+    });
   } else {
     alert("error");
-  } 
+  }
 }
 
 function* invoiceDelete(action) {
   const results = yield callWithAuth.post(API.invoice.delete, {
-    trx_id: action.payload
+    inv_id: action.payload
   });
   if (results) {
-    const result = yield callWithAuth.get(API.invoice.getall);
+    const result = yield callWithAuth.get(API.invoice.getall + "/" + sessionStorage.getItem("usr_id"));
     if (result) {
-      yield put({ type: DATA_ACTIONS.TRX_STORE, result });
+      yield put({ type: DATA_ACTIONS.INVOICE_STORE, result });
     } else {
       alert("error");
     }
@@ -421,13 +465,18 @@ function* invoiceDelete(action) {
 }
 
 function* invoiceAdd(action) {
- 
-  const results = yield callWithAuth.post(API.invoice.create, { ...action.payload, invoice_usr_id:sessionStorage.getItem("usr_id") });
+  const results = yield callWithAuth.post(API.invoice.create, {
+    ...action.payload,
+    inv_created_by: sessionStorage.getItem("usr_id"),
+    inv_updated_by: sessionStorage.getItem("usr_id")
+  });
   if (results) {
     const { msg } = results;
-    const result = yield callWithAuth.get(API.invoice.getall);
+    const result = yield callWithAuth.get(
+      API.invoice.getall + "/" + sessionStorage.getItem("usr_id")
+    );
     if (result) {
-      yield put({ type: DATA_ACTIONS.TRX_STORE, result });
+      yield put({ type: DATA_ACTIONS.INVOICE_STORE, result });
     } else {
       alert("error");
     }
@@ -439,13 +488,17 @@ function* invoiceAdd(action) {
 }
 
 function* invoiceEdit(action) {
- 
-  const results = yield callWithAuth.post(API.invoice.update, { ...action.payload, invoice_usr_id:sessionStorage.getItem("usr_id") });
+  const results = yield callWithAuth.post(API.invoice.update, {
+    ...action.payload,
+    inv_usr_id: sessionStorage.getItem("usr_id")
+  });
   if (results) {
     const { msg } = results;
-    const result = yield callWithAuth.get(API.invoice.getall);
+    const result = yield callWithAuth.get(
+      API.invoice.getall + "/" + sessionStorage.getItem("usr_id")
+    );
     if (result) {
-      yield put({ type: DATA_ACTIONS.TRX_STORE, result });
+      yield put({ type: DATA_ACTIONS.INVOICE_STORE, result });
     } else {
       alert("error");
     }
