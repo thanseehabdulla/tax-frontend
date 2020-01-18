@@ -54,6 +54,15 @@ const DATA_ACTIONS = {
   INVOICE_ADD:"invoice_add",
   INVOICE_EDIT:"invoice_edit",
   UPDATE_INVOICELG:"update_invoicelg",
+  // invoice lines inl
+  INL_STORE: "inl_store",
+  INL_DETAIL_STORE: "inl_detail_store",
+  INL_FETCH: "inl_fetch",
+  INL_DETAIL_FETCH: "inl_detail_fetch",
+  INL_DELETE: "inl_delete",
+  INL_ADD:"inl_add",
+  INL_EDIT:"inl_edit",
+  UPDATE_INLLG:"update_inllg",
   // user
    updateLg:payload => {
     return { type: DATA_ACTIONS.UPDATE_LG, payload };
@@ -170,6 +179,25 @@ const DATA_ACTIONS = {
   },
   updateinvoiceLg:payload => {
     return { type: DATA_ACTIONS.UPDATE_INVOICELG, payload };
+  },
+   // invoice lines inl
+  inlEditActionCreator:payload => {
+    return { type: DATA_ACTIONS.INL_EDIT, payload };
+  },
+  inlFetchActionCreator: () => {
+    return { type: DATA_ACTIONS.INL_FETCH };
+  },
+  inlDetailFetchActionCreator: payload => {
+    return { type: DATA_ACTIONS.INL_DETAIL_FETCH, payload };
+  },
+  inlDeleteActionCreator: payload => {
+    return { type: DATA_ACTIONS.INL_DELETE, payload };
+  },
+  inlAddActionCreator:payload => {
+    return { type: DATA_ACTIONS.INL_ADD, payload };
+  },
+  updateinlLg:payload => {
+    return { type: DATA_ACTIONS.UPDATE_INLLG, payload };
   },
 };
 

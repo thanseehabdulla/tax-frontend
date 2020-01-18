@@ -31,7 +31,7 @@ function Sidebar(props) {
 
   return (
     <div>
-    <Tab.Container id="left-tabs-example" defaultActiveKey={props.user?"invoice":"user"}>
+    <Tab.Container id="left-tabs-example" defaultActiveKey={props.user?"invoicelines":"user"}>
     <div>
       <Row style={{margin:0}}>
         <Col sm={2}>

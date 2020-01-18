@@ -509,6 +509,92 @@ function* invoiceEdit(action) {
   }
 }
 
+//invoice lines inl
+function* inlFetch(action) {
+  const result = yield callWithAuth.get(
+    API.inl.getall + "/" + sessionStorage.getItem("usr_id")
+  );
+  if (result) {
+    yield put({ type: DATA_ACTIONS.INL_STORE, result });
+  } else {
+    alert("error");
+  }
+}
+
+function* inlDetailFetch(action) {
+  const result = yield callWithAuth.get(API.inl.get + "/" + action.payload);
+  if (result) {
+    yield put({ type: DATA_ACTIONS.INL_DETAIL_STORE, result });
+    yield put({
+      type: DATA_ACTIONS.UPDATE_INLLG,
+      payload: { inllgEditShow: true }
+    });
+  } else {
+    alert("error");
+  }
+}
+
+function* inlDelete(action) {
+  const results = yield callWithAuth.post(API.inl.delete, {
+    inl_id: action.payload
+  });
+  if (results) {
+    const result = yield callWithAuth.get(API.inl.getall + "/" + sessionStorage.getItem("usr_id"));
+    if (result) {
+      yield put({ type: DATA_ACTIONS.INL_STORE, result });
+    } else {
+      alert("error");
+    }
+  } else {
+    alert("error");
+  }
+}
+
+function* inlAdd(action) {
+  const results = yield callWithAuth.post(API.inl.create, {
+    ...action.payload,
+    inl_created_by: sessionStorage.getItem("usr_id"),
+    inl_updated_by: sessionStorage.getItem("usr_id")
+  });
+  if (results) {
+    const { msg } = results;
+    const result = yield callWithAuth.get(
+      API.inl.getall + "/" + sessionStorage.getItem("usr_id")
+    );
+    if (result) {
+      yield put({ type: DATA_ACTIONS.INL_STORE, result });
+    } else {
+      alert("error");
+    }
+    alert(msg);
+  } else {
+    const { errors } = results;
+    alert(errors[0].message);
+  }
+}
+
+function* inlEdit(action) {
+  const results = yield callWithAuth.post(API.inl.update, {
+    ...action.payload,
+    inl_usr_id: sessionStorage.getItem("usr_id")
+  });
+  if (results) {
+    const { msg } = results;
+    const result = yield callWithAuth.get(
+      API.inl.getall + "/" + sessionStorage.getItem("usr_id")
+    );
+    if (result) {
+      yield put({ type: DATA_ACTIONS.INL_STORE, result });
+    } else {
+      alert("error");
+    }
+    alert(msg);
+  } else {
+    const { errors } = results;
+    alert(errors[0].message);
+  }
+}
+
 function* mySaga() {
   yield takeEvery(DATA_ACTIONS.LOGIN_REQUEST, login);
   yield takeEvery(DATA_ACTIONS.USER_FETCH, userFetch);
@@ -546,6 +632,12 @@ function* mySaga() {
   yield takeEvery(DATA_ACTIONS.INVOICE_DELETE, invoiceDelete);
   yield takeEvery(DATA_ACTIONS.INVOICE_ADD, invoiceAdd);
   yield takeEvery(DATA_ACTIONS.INVOICE_EDIT, invoiceEdit);
+  // invoice lines inl
+  yield takeEvery(DATA_ACTIONS.INL_FETCH, inlFetch);
+  yield takeEvery(DATA_ACTIONS.INL_DETAIL_FETCH, inlDetailFetch);
+  yield takeEvery(DATA_ACTIONS.INL_DELETE, inlDelete);
+  yield takeEvery(DATA_ACTIONS.INL_ADD, inlAdd);
+  yield takeEvery(DATA_ACTIONS.INL_EDIT, inlEdit);
 }
 
 export default mySaga;

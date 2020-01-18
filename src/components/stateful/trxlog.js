@@ -61,13 +61,13 @@ class TRX_LOG extends React.Component {
       name: "trx_type",
       option:["A","E","D"],
       label: "trx_type",
-      col: 12
+      col: 6
     },
     {
       type: "text",
       name: "trx_desc",
       label: "trx_desc",
-      col: 12
+      col: 6
     }
   ];
 
@@ -77,13 +77,13 @@ class TRX_LOG extends React.Component {
       name: "trx_type",
       option:["A","E","D"],
       label: "trx_type",
-      col: 12
+      col: 6
     },
     {
       type: "text",
       name: "trx_desc",
       label: "trx_desc",
-      col: 12
+      col: 6
     }
   ];
 

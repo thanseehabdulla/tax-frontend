@@ -11,8 +11,8 @@ function Topbar(props) {
   };
 
   return (
-    <div className="topbar">
-      <Row>
+    <div className="topbar bg-dark">
+      <Row style={{width:'100%'}}>
         <Col lg={12}>
           <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="#home">

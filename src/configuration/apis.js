@@ -55,6 +55,13 @@ const API = {
         'getall':ipused+ '/api/v1/invoices/getall',
         'delete':ipused+ '/api/v1/invoices/delete',
         'statuschange':ipused+ '/api/v1/invoices/statuschange',
+    },
+    'inl':{
+        'create':ipused+ '/api/v1/inl/create',
+        'update':ipused+ '/api/v1/inl/update',
+        'get':ipused+ '/api/v1/inl/get',
+        'getall':ipused+ '/api/v1/inl/getall',
+        'delete':ipused+ '/api/v1/inl/delete',
     }
 }
 

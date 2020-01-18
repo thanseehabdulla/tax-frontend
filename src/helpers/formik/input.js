@@ -69,11 +69,41 @@ const Forms = props => {
   //   // console.log("prope", e.target.value);
   // };
 
-  const handleChangeCusSelect = (e) => {
+  const handleChangeCusSelect = e => {
     console.log("cus", e);
     setFieldValue("inv_customer_ssn", e.target.value.cus_ssn, false);
     setFieldValue("inv_customer_name", e.target.value.cus_name, false);
     setFieldValue("inv_cum_id", e.target.value.cus_id, false);
+  };
+
+  const handleTaxChange = (b, e) => {
+    console.log("cus", b);
+    const curObj = b.filter(bd => bd.tax_id === e.target.value);
+    setFieldValue("inl_net_price", e.target.value.cus_name, false);
+    let inl_net_price = 0;
+    let inl_price = Number(values["inl_price"]) || 0;
+    let inl_quantity = Number(values["inl_quantity"]) || 0;
+    inl_net_price = inl_price * inl_quantity - Number(curObj[0]["tax_id"]);
+    setFieldValue("inl_discount_perc", curObj[0]["tax_id"], false);
+    setFieldValue("inl_net_price", inl_net_price, false);
+  };
+
+  const handleChangeInl = e => {
+    let inl_net_price = 0;
+    let inl_price = Number(values["inl_price"]) || 0;
+    let inl_discount_perc = Number(values["inl_discount_perc"]) || 0;
+    let inl_quantity = 0;
+    if (e.target.name === "inl_quantity") {
+      inl_quantity = Number(e.target.value) || 0;
+      setFieldValue("inl_quantity", inl_quantity, false);
+      inl_price = Number(values["inl_price"]) || 0;
+    } else {
+      inl_price = Number(e.target.value) || 0;
+      setFieldValue("inl_price", inl_price, false);
+      inl_quantity = Number(values["inl_quantity"]) || 0;
+    }
+    inl_net_price = (Number(inl_price) * Number(inl_quantity))-inl_discount_perc;
+    setFieldValue("inl_net_price", inl_net_price, false);
   };
 
   const handleFormState = formState => {
@@ -141,6 +171,72 @@ const Forms = props => {
                   />
                 </FormControl>
               )}
+              {field.type === "number" && (
+                <FormControl className={classes.formControl}>
+                  <TextField
+                    type="number"
+                    error={
+                      (values[field.name] || "").toString().length > 5
+                        ? true
+                        : false
+                    }
+                    helperText={
+                      (values[field.name] || []).toString().length > 5
+                        ? "Please enter Maximum of 5 digit"
+                        : false
+                    }
+                    // erorText="Please enter only 12 digits number"
+                    name={field.name}
+                    defaultValue={initial[field.name]}
+                    // label={props.intl.formatMessage({id:field.label})}
+                    label={field.label}
+                    // component={TextField}
+                    // placeholder={props.intl.formatMessage({id:field.label})}
+                    value={values[field.name]}
+                    onBlur={handleBlur}
+                    tag={Field}
+                    onChange={handleChange}
+                    variant="outlined"
+                    inputProps={{ maxLength: 5 }}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                </FormControl>
+              )}
+              {field.type === "number-inl" && (
+                <FormControl className={classes.formControl}>
+                  <TextField
+                    type="number"
+                    error={
+                      (values[field.name] || "").toString().length > 5
+                        ? true
+                        : false
+                    }
+                    helperText={
+                      (values[field.name] || []).toString().length > 5
+                        ? "Please enter Maximum of 5 digit"
+                        : false
+                    }
+                    // erorText="Please enter only 12 digits number"
+                    name={field.name}
+                    defaultValue={initial[field.name]}
+                    // label={props.intl.formatMessage({id:field.label})}
+                    label={field.label}
+                    // component={TextField}
+                    // placeholder={props.intl.formatMessage({id:field.label})}
+                    value={values[field.name]}
+                    onBlur={handleBlur}
+                    tag={Field}
+                    onChange={handleChangeInl.bind(this)}
+                    variant="outlined"
+                    inputProps={{ maxLength: 5 }}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                </FormControl>
+              )}
               {field.type === "disabled" && (
                 <FormControl className={classes.formControl}>
                   <TextField
@@ -176,13 +272,14 @@ const Forms = props => {
                     labelId={`${field.label}-label`}
                     id={field.label}
                     name={field.name}
+                    // error={(values[field.name]||"").toString().length < 1 ? true: false}
+                    // helperText={(values[field.name]||[]).toString().length < 1 ? "Please choose a option": false}
                     children={field.option.map(e => (
                       <MenuItem value={e}>{e}</MenuItem>
                     ))}
                     onChange={handleChange}
                     defaultValue={initial[field.name]}
                     value={values[field.name]}
-                    error={errors[field.name]}
                   />
                   <FormHelperText>select atleast one option*</FormHelperText>
                 </FormControl>
@@ -225,7 +322,7 @@ const Forms = props => {
                         shrink: true
                       }}
                     />
-                     <TextField
+                    <TextField
                       name="inv_cum_id"
                       disabled
                       hidden
@@ -241,6 +338,33 @@ const Forms = props => {
                 </div>
               )}
 
+              {field.type === "select-tax" && (
+                <div>
+                  <FormControl
+                    // variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <InputLabel id={`${field.label}-label`}>
+                      {field.label}
+                    </InputLabel>
+                    <Select
+                      labelId={`${field.label}-label`}
+                      id={field.label}
+                      name={field.name}
+                      children={field.option.map(e => {
+                        console.log("options", e.tax_id);
+                        return (
+                          <MenuItem value={e.tax_id}>{e.tax_name}</MenuItem>
+                        );
+                      })}
+                      onChange={handleTaxChange.bind(this, field.option)}
+                      value={values[field.name]}
+                      error={errors[field.name]}
+                    />
+                  </FormControl>
+                </div>
+              )}
+
               {field.type === "password" && (
                 <FormControl className={classes.formControl}>
                   <TextField
@@ -251,11 +375,23 @@ const Forms = props => {
                     label={field.label}
                     // component={TextField}
                     tag={Field}
+                    error={
+                      (values[field.name] || "").toString().length > 3 &&
+                      (values[field.name] || "").toString().length < 8
+                        ? true
+                        : false
+                    }
+                    helperText={
+                      (values[field.name] || "").toString().length > 3 &&
+                      (values[field.name] || "").toString().length < 8
+                        ? "Password should be atleast 8 digit"
+                        : false
+                    }
                     // placeholder={props.intl.formatMessage({id:field.label})}
                     value={values[field.name]}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={errors[field.name]}
+                    // error={errors[field.name]}
                     variant="outlined"
                     InputLabelProps={{
                       shrink: true

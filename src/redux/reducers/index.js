@@ -9,6 +9,7 @@ const initialState = {
   currencys:[],
   trxs:[],
   invoices:[],
+  inls:[],
   customer_detail: {},
   lgShow: false,
   lgEditShow: false,
@@ -21,7 +22,9 @@ const initialState = {
   tlgShow: false,
   tlgEditShow: false,
   invoicelgShow: false,
-  invoicelgEditShow: false
+  invoicelgEditShow: false,
+  inllgShow: false,
+  inllgEditShow: false
 };
 
 function globalState(state = initialState, action) {
@@ -61,12 +64,19 @@ function globalState(state = initialState, action) {
       return { ...state, trxs: action.result };
      case DATA_ACTIONS.TRX_DETAIL_STORE:
       return { ...state, detail: action.result };
-      //trx
+      //invoice
       case DATA_ACTIONS.UPDATE_INVOICELG:
       return { ...state, ...action.payload };
       case DATA_ACTIONS.INVOICE_STORE:
       return { ...state, invoices: action.result };
      case DATA_ACTIONS.INVOICE_DETAIL_STORE:
+      return { ...state, detail: action.result };
+      //invoice line inl
+      case DATA_ACTIONS.UPDATE_INLLG:
+      return { ...state, ...action.payload };
+      case DATA_ACTIONS.INL_STORE:
+      return { ...state, inls: action.result };
+     case DATA_ACTIONS.INL_DETAIL_STORE:
       return { ...state, detail: action.result };
     default:
       return state;

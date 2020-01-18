@@ -64,7 +64,7 @@ class Tax extends React.Component {
       col: 6
     },
     {
-      type: "text",
+      type: "number",
       name: "tax_perc",
       label: "tax_perc",
       col: 6
@@ -86,7 +86,7 @@ class Tax extends React.Component {
       col: 6
     },
     {
-      type: "text",
+      type: "number",
       name: "tax_perc",
       label: "tax_perc",
       col: 6
